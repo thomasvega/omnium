@@ -1,0 +1,61 @@
+{% extends 'accounts/base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .input-group-text {
+                background: #221E47 !important;
+                color: white !important;
+                border: 0 !important;
+                border-radius: 0.5rem 0 0 0.5rem !important;
+            }
+            .input_user,
+            .input_pass:focus {
+                box-shadow: none !important;
+                outline: 0px !important;
+            }
+            .login_btn {
+                width: 100%;
+                background: #922681 !important;
+                color: white !important;
+            }
+            .login_btn:focus {
+                box-shadow: none !important;
+                outline: 0px !important;
+            }
+            .errors {
+                color: red;
+                
+            }
+</style>
+<div class="container">
+    <h1 class="text-center">Profil</h1>
+    <div class="d-flex justify-content-center align-items-center">
+        <form action="" method="post" >
+            {% csrf_token %}
+            <div class="input-group mb-3">
+                <div class="input-group-append">
+                    <span class="input-group-text"><i class="fas fa-envelope-square"></i></span>
+                </div>
+                {{form.name}}
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-append">
+                    <span class="input-group-text"><i class="fas fa-key"></i></span>
+                </div>
+                {{form.email}}
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-append">
+                    <span class="input-group-text"><i class="fas fa-key"></i></span>
+                </div>
+                {{form.class_played}}
+            </div>
+            <div class="d-flex justify-content-center  login_container">
+                <input class="btn login_btn" type="submit" value="Enregistrer">
+            </div>
+        </form>
+    </div>
+    
+</div>
+{% endblock %}
