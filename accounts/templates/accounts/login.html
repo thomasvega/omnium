@@ -51,10 +51,6 @@
                 box-shadow: none !important;
                 outline: 0px !important;
             }
-            .errors {
-                color: red;
-                
-            }
         </style>
     </head>
     <body>
@@ -68,37 +64,23 @@
                     <form action="" method="post">
                         {% csrf_token %}
                         <div class="input-group mb-3">
-                            <div class="input-group-append">
-                                <span class="input-group-text"><i class="fas fa-user"></i></span>
-                            </div>
-                            {{form.username}}
-                        </div>
-                        <div class="input-group mb-3">
-                            <div class="input-group-append">
-                                <span class="input-group-text"><i class="fas fa-envelope-square"></i></span>
-                            </div>
-                            {{form.email}}
-                        </div>
-                        <div class="input-group mb-3">
-                            <div class="input-group-append">
-                                <span class="input-group-text"><i class="fas fa-key"></i></span>
-                            </div>
-                            {{form.password1}}
-                        </div>
-                        <div class="input-group mb-3">
-                            <div class="input-group-append">
-                                <span class="input-group-text"><i class="fas fa-key"></i></span>
-                            </div>
-                            {{form.password2}}
-                        </div>
-                        <div class="d-flex justify-content-center  login_container">
-                            <input class="btn login_btn" type="submit" value="Register Account">
-                        </div>
-                        <div class="errors">
-                            {{form.errors}} 
+							<div class="input-group-append">
+								<span class="input-group-text"><i class="fas fa-user"></i></span>
+							</div>
+							<input type="text" name="username" placeholder="Username..." class="form-control">
+						</div>
+						<div class="input-group mb-2">
+							<div class="input-group-append">
+								<span class="input-group-text"><i class="fas fa-key"></i></span>
+							</div>
+								<input type="password" name="password" placeholder="Password..." class="form-control" >
+						</div>
+
+						<div class="d-flex justify-content-center mt-3 login_container">
+							<input class="btn login_btn" type="submit" value="Login">
                         </div>
                         <div class="text-center mt-3">
-                            <a href="{% url 'login' %}" class="text-white"> Déjà inscrit ? </a>
+                            <a href="{% url 'register' %}" class="text-white"> Pas encore inscrit ? </a>
                         </div>
                     </form>
                 </div>
