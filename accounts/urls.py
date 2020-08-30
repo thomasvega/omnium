@@ -10,5 +10,5 @@ urlpatterns = [
 
 
     path('account/', views.accountSettings, name="account"),
-
+    path('wishlist/', views.wishlist, name="wishlist"),
 ]
