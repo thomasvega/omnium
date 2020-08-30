@@ -36,7 +36,7 @@ def loginPage(request):
             login(request, user)
             return redirect('home')
         else:
-            message.info(request, 'Username OR password is incorrect')
+            messages.info(request, 'Username OR password is incorrect')
 
     context = { }
     return render(request, 'accounts/login.html', context)
@@ -48,7 +48,10 @@ def logoutUser(request):
 
 @login_required(login_url='login')
 def home(request):
-    return render(request, 'accounts/home.html')
+    members = Member.objects.all()
+    member_group = request.user.groups.all()
+    context = {'members': members}
+    return render(request, 'accounts/home.html', context)
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['member', 'pu', 'officier', 'gm'])

@@ -3,7 +3,27 @@
 
 <div class="container">
     <h1 class="text-center">Roster</h1>
-
-    <a href="{% url 'account' %}">ici</a>
+    <div class="card card-body">
+        <table class="table">
+            <tr>
+                <th>Pseudo</th>
+                <th>Rôle</th>
+                <th>Classe</th>
+                <th>Wishlist</th>
+            </tr>
+            {%for member in members%}
+                <tr>
+                    <td>{{member.name}}</td>
+                    <td>Officier</td>
+                    {% if member.class_played is not None%}
+                        <td>{{member.class_played}}</td>
+                    {% else%}                   
+                        <td>Pas encore renseigné</td>
+                    {%endif%}        
+                    <td>Wishlist</td>
+                </tr>
+            {%endfor%}
+        </table>
+    </div>
 </div>
 {% endblock %}
