@@ -28,17 +28,69 @@
                 height: 100%;
                 width: 100%;
             }
+            .separation {
+                border-right: 1px solid white;
+            }
+            .input-group-text {
+                background: #221E47 !important;
+                color: white !important;
+                border: 0 !important;
+                border-radius: 0.5rem 0 0 0.5rem !important;
+            }
+            .input_user,
+            .input_pass:focus {
+                box-shadow: none !important;
+                outline: 0px !important;
+            }
+            .login_btn {
+                width: 100%;
+                background: #922681 !important;
+                color: white !important;
+            }
+            .login_btn:focus {
+                box-shadow: none !important;
+                outline: 0px !important;
+            }
         </style>
     </head>
     <body>
         <div class="container omnium-height-width">
             <div class="row d-flex justify-content-center align-items-center omnium-height-width">
-                <div class="col-6 d-flex justify-content-center align-items-center">
+                <div class="col-6 d-flex justify-content-center align-items-center separation">
                     <img src="{% static 'images/logo_omnium.png' %}" alt="" class="omnium-logo">
                     <span class="omnium-font">Consensus Omnium</span>
                 </div>
-                <div class="col-6">
-                    form
+                <div class="col-6 d-flex justify-content-center ">
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <div class="input-group mb-3">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            </div>
+                            {{form.username}}
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-envelope-square"></i></span>
+                            </div>
+                            {{form.email}}
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-key"></i></span>
+                            </div>
+                            {{form.password1}}
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-key"></i></span>
+                            </div>
+                            {{form.password2}}
+                        </div>
+                        <div class="d-flex justify-content-center  login_container">
+                            <input class="btn login_btn" type="submit" value="Register Account">
+                          </div>
+                    </form>
                 </div>
             </div>
         </div>
