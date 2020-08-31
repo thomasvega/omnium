@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from django.forms import inlineformset_factory
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
+from django.db.models import Max
 
 
-from .forms import CreateUserForm, MemberForm
+from .forms import CreateUserForm, MemberForm, WishlistForm
 from .decorators import allowed_users
 
 import requests
@@ -69,21 +71,31 @@ def accountSettings(request):
 
 
 def wishlist(request):
-    if request.method == 'POST':
-        item_name = request.POST.get('item_name')
+    user = request.user
+    user_id = user.id
+    WishlistFormSet = inlineformset_factory(Member, Wishlist, fields=('order', 'item'))
+    member_connected = Member.objects.get(id=user_id)
+    print(WishlistFormSet)
+    formset = WishlistFormSet(instance=member_connected)
+    # if 'looking_for_item' in request.POST :
+    #     item_name = request.POST.get('item_name')
+    #     if item_name:
+    #         r = requests.get(f'https://eu.api.blizzard.com/data/wow/search/item?namespace=static-eu&locale=fr_FR&name.en_US={item_name}&orderby=name&_page=1&access_token=USJY0wX2Hyql2ao82qh3qhKUiIQVkdunaf', params=request.GET)
+    #         if r.status_code == 200: 
+    #             data = r.json()
+    #             datas = data['results']
+    #             print(formset)
+    #             context = {'datas': datas, 'item_name': item_name, 'formset': formset}
 
-        if item_name:
-            r = requests.get(f'https://eu.api.blizzard.com/data/wow/search/item?namespace=static-eu&locale=fr_FR&name.en_US={item_name}&orderby=id&_page=1&access_token=USJY0wX2Hyql2ao82qh3qhKUiIQVkdunaf', params=request.GET)
-            print(r.status_code)
-            if r.status_code == 200: 
-                data = r.json()
-                data = data['results'][0]['data']['media']['id']
-                context = {'data': data, 'item_name': item_name}
+    #             return render(request, 'accounts/wishlist.html', context)
+    #         else:
+    #             context = {'error_message': "Merci de vérifier l'ortographe de l'item"}
+    #             return render(request, 'accounts/wishlist.html', context)
+    # if 'add_wishlist' in request.POST:
+    #     form = WishlistFormSet(request.POST, instance=member_connected)
+    #     if form.is_valid():
+    #         form.save()
 
-                return render(request, 'accounts/wishlist.html', context)
-            else:
-                context = {'error_message': "Merci de vérifier l'ortographe de l'item"}
-                return render(request, 'accounts/wishlist.html', context)
 
-    context = {}
+    context = {'formset': formset}
     return render(request, 'accounts/wishlist.html', context)

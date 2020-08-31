@@ -11,27 +11,69 @@
         $("#sortable" ).disableSelection();
     } );
     </script> -->
+    <style>
+
+    </style>
     
 </head>
-<div class="container">
-    <h1 class="text-center">Wishlist</h1>
-    <div class="card card-body">
-        <form action="" method="post" class="form-inline mb-5">
-            {% csrf_token %}
-            <div class="form-group mr-5">
-                <input type="text" class="form-control" placeholder="Nom de l'item" name="item_name">
-            </div>
-            <input type="submit" class="btn btn-primary" value="Rechercher">
-            {{error_message}}
-        </form>
-        <div class="row ml-1 d-flex align-items-center">
-            <a href="https://www.wowhead.com/item={{data}}">{{item_name}}</a>
-            <input type="submit" value="Ajouter l'item" class="btn btn-success ml-5">
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-4">
+            <h1 class="text-center mb-5">Wishlist actuelle</h1>
         </div>
-        <!-- <ul id="sortable">
-            <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span></li>
-        </ul> -->
-           
+        <div class="col-8">
+            <h1 class="text-center mb-5">Ajouter dans sa wishlist</h1>
+            <form action="" method="post" class="form-inline mb-5 d-flex justify-content-center align-items-center">
+                {% csrf_token %}
+                <div class="form-group mr-2">
+                    <input type="text" class="form-control" placeholder="Nom de l'item" name="item_name">
+                </div>
+                <input type="submit" class="btn btn-primary" value="Rechercher" name="looking_for_item">
+                {{error_message}}
+            </form>
+            <form action="">
+                {{ formset.management_form }}
+                {% for form in formset %}
+                    {{formset}}
+                {%endfor%}
+
+            </form>
+            <table class="table">
+                <tr>
+                    <th>Item</th>
+                    <th>Position</th>
+                    <th class='text-center'>Ajout à la wishlist</th>
+                </tr>
+                <form action="" method="post">
+                    {% csrf_token %}   
+                    <!-- {% for data in datas %}
+                        
+                            {% if data.data.quality.name.fr_FR == 'Épique' or data.data.quality.name.fr_FR == 'Rare' or data.data.quality.name.fr_FR == "Légendaire" and data.data.level < 60 %}
+                                <tr>
+                                    <td>
+                                        <input type="hidden" name="item" value="{{data.data.name.fr_FR}};{{data.data.media.id}}">
+                                        <a href="https://fr.classic.wowhead.com/item={{data.data.media.id}}"> {{data.data.name.fr_FR}}</a>
+                                    </td>
+                                    <td>
+                                        <input type="number" name="order" placeholder="Position de l'item">
+                                    </td>
+                                    <td><input type="submit" name="add_wishlist" value="Ajouter l'item" class="btn btn-success ml-5"></td>
+                                </tr>
+                            {%endif%}
+                    {%endfor%} -->
+                </form>
+
+            </table>
+        </div>
     </div>
+   
+    <div class="row ml-1">
+        
+            
+    </div>
+    <!-- <ul id="sortable">
+        <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span></li>
+    </ul> -->
+           
 </div>
 {% endblock %}
