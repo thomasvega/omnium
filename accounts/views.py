@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.forms import inlineformset_factory
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, User
 from django.contrib.auth.decorators import login_required
 from django.db.models import Max, Count
 
@@ -48,12 +48,14 @@ def logoutUser(request):
     logout(request)
     return redirect('login')
 
+
 @login_required(login_url='login')
 def home(request):
-    members = Member.objects.all()
-    member_group = request.user.groups.all()
-    context = {'members': members}
+    values = Wishlist.objects.filter().values('item', 'order', 'media', 'member', 'member__name', 'member__grade', 'member__class_played')
+    print(values)
+    context = {'values': values}
     return render(request, 'accounts/home.html', context)
+
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['member', 'pu', 'officier', 'gm'])

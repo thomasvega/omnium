@@ -12,7 +12,12 @@
     } );
     </script> -->
     <style>
-
+        .warning {
+            color: red;
+        }
+        .success {
+            color: green;
+        }
     </style>
     
 </head>
@@ -46,7 +51,7 @@
                 <input type="submit" class="btn btn-primary" value="Rechercher" name="looking_for_item">
             </form>
             {% for message in messages %}
-                <p class="text-danger">{{message}}</p>
+                <p class="{{message.tags}}">{{message}}</p>
             {%endfor%} 
             <table class="table">
                 <tr>

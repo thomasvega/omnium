@@ -1,29 +1,81 @@
 {% extends 'accounts/base.html' %}
 {% block content %}
-
+<script src="https://wow.zamimg.com/widgets/power.js"></script>
+<style>
+    li {
+        list-style: none;
+    }
+    .expand 
+    {
+        cursor: pointer;
+        color: rgb(151, 67, 234);
+    }
+</style>
 <div class="container">
     <h1 class="text-center">Roster</h1>
-    <div class="card card-body">
-        <table class="table">
+    <table class="table">
+        <tr>
+            <th style="font-size: 22px;">Membre</th>
+            <th style="font-size: 22px;">Wishlist</th>
+        </tr>
+        {% regroup values by member__name as values %}
+        {%for value in values%}
             <tr>
-                <th>Pseudo</th>
-                <th>Rôle</th>
-                <th>Classe</th>
-                <th>Wishlist</th>
+                <td style='display: flex; flex-direction:column;'>
+                    <span style='font-size:19px; font-weight: bold; text-transform: capitalize;'>{{value.grouper}}</span>
+                    {%regroup value.list by member__grade as membergroup %}
+                    {% for mgroup in membergroup%}
+                        {% if mgroup.grouper == "Guild Master" %}
+                            <span style="color: rgb(89, 0, 89); font-weight: bold;">Guild Master</span>
+                        {% elif mgroup.grouper == "Officier" %}
+                            <span style="color: rgb(255, 166, 0); font-weight: bold;">Officier</span>
+                        {% elif mgroup.grouper == "Member" %}
+                            <span style="color: rgb(0, 132, 9); font-weight: bold;">Member</span>
+                        {% else %}
+                            <span></span>
+                        {%endif%}   
+                    {% endfor %} 
+                    {%regroup value.list by member__class_played as memberclassplayer %}
+                    {% for mclass in memberclassplayer%}
+                        {% if mclass.grouper is not None%}
+                            <span>{{mclass.grouper}}</span>
+                        {% else %}                   
+                            <span>Pas encore renseigné</span>
+                        {%endif%}        
+                    {% endfor %} 
+                </td>
+                <td> 
+                    <ul class="expandible">
+                        {%regroup value.list by member as wishlists %}
+                        {% for wishlist in wishlists %}
+                            {% for mwishlist in wishlist.list%}
+                               <li> {{mwishlist.order}}. <a href="https://fr.classic.wowhead.com/item={{mwishlist.media}}"> {{mwishlist.item}}</a> <br></li>
+                            {%endfor%}
+                        {% endfor %} 
+                    </ul>
+                </td>
             </tr>
-            {%for member in members%}
-                <tr>
-                    <td>{{member.name}}</td>
-                    <td>Officier</td>
-                    {% if member.class_played is not None%}
-                        <td>{{member.class_played}}</td>
-                    {% else%}                   
-                        <td>Pas encore renseigné</td>
-                    {%endif%}        
-                    <td>Wishlist</td>
-                </tr>
-            {%endfor%}
-        </table>
-    </div>
+        {%endfor%}
+    </table>
 </div>
+<script>
+    $('ul.expandible').each(function(){
+        var $ul = $(this),
+            $lis = $ul.find('li:gt(1)'),
+            isExpanded = $ul.hasClass('expanded');
+            $lis[isExpanded ? 'show' : 'hide']();
+        console.log($lis)
+        if($lis.length > 0){
+            $ul
+                .append($('<li class="expand"><span>' + (isExpanded ? 'Show Less...' : 'Show More...') + '</span></li>')
+                .click(function(event){
+                    var isExpanded = $ul.hasClass('expanded');
+                    event.preventDefault();
+                    $(this).text(isExpanded ? 'Show More...' : 'Show Less...');
+                    $ul.toggleClass('expanded');
+                    $lis.toggle();
+                }));
+        }
+    });
+</script>
 {% endblock %}
