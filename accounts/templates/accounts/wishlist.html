@@ -19,7 +19,22 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-4">
-            <h1 class="text-center mb-5">Wishlist actuelle</h1>
+            <h1 class="text-center mb-5">Wishlist</h1>
+            {% if wishlist_member|length > 0 %}
+                <table class="table mt-5">
+                    <tr>
+                        <th>Position</th>
+                        <th>Item</th>
+                    </tr>
+                    {% for wishlist in wishlist_member|dictsort:'order' %}
+                        <tr>
+                            <td>{{wishlist.order}}</td>
+                            <td><a href="https://fr.classic.wowhead.com/item={{wishlist.media}}">{{wishlist.item}}</a></td>
+                        </tr>
+                    {% endfor %}
+
+                </table>
+            {%endif%}
         </div>
         <div class="col-8">
             <h1 class="text-center mb-5">Ajouter dans sa wishlist</h1>
@@ -29,40 +44,35 @@
                     <input type="text" class="form-control" placeholder="Nom de l'item" name="item_name">
                 </div>
                 <input type="submit" class="btn btn-primary" value="Rechercher" name="looking_for_item">
-                {{error_message}}
             </form>
-            <form action="">
-                {{ formset.management_form }}
-                {% for form in formset %}
-                    {{formset}}
-                {%endfor%}
-
-            </form>
+            {% for message in messages %}
+                <p class="text-danger">{{message}}</p>
+            {%endfor%} 
             <table class="table">
                 <tr>
                     <th>Item</th>
                     <th>Position</th>
                     <th class='text-center'>Ajout à la wishlist</th>
                 </tr>
-                <form action="" method="post">
-                    {% csrf_token %}   
-                    <!-- {% for data in datas %}
-                        
+                    {% for data in datas %}
+                        <form action="" method="post">
+                            {% csrf_token %}   
                             {% if data.data.quality.name.fr_FR == 'Épique' or data.data.quality.name.fr_FR == 'Rare' or data.data.quality.name.fr_FR == "Légendaire" and data.data.level < 60 %}
                                 <tr>
                                     <td>
-                                        <input type="hidden" name="item" value="{{data.data.name.fr_FR}};{{data.data.media.id}}">
+                                        <input type="hidden" name="item" value="{{data.data.name.fr_FR}}">
+                                        <input type="hidden" name="media" value="{{data.data.media.id}}">
                                         <a href="https://fr.classic.wowhead.com/item={{data.data.media.id}}"> {{data.data.name.fr_FR}}</a>
                                     </td>
                                     <td>
-                                        <input type="number" name="order" placeholder="Position de l'item">
+                                        <input type="text" name="order" placeholder="Position de l'item">
                                     </td>
                                     <td><input type="submit" name="add_wishlist" value="Ajouter l'item" class="btn btn-success ml-5"></td>
                                 </tr>
                             {%endif%}
-                    {%endfor%} -->
-                </form>
-
+                        </form>
+                    {%endfor%}
+                    
             </table>
         </div>
     </div>

@@ -18,7 +18,9 @@ class CreateUserForm(UserCreationForm):
         fields = ['username', 'email', 'password1', 'password2']
 
 
-class WishlistForm(ModelForm):
+class WishlistForm(forms.ModelForm):
+    order = forms.CharField(required=False)
+
     class Meta:
         model = Wishlist
         fields= '__all__'

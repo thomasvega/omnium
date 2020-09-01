@@ -29,8 +29,9 @@ class Member(models.Model):
 
 
 class Wishlist(models.Model):
-    order = models.IntegerField(max_length=200, null=True)
+    order = models.IntegerField(null=True)
     item = models.CharField(max_length=200, null=True)
+    media = models.CharField(max_length=200, null=True)
     member = models.ForeignKey(Member, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
