@@ -13,6 +13,10 @@
 </style>
 <div class="container">
     <h1 class="text-center">Roster</h1>
+    <form method="get">
+        {{filterForm.form}}
+        <button class="btn btn-primary" name="filter_data" type="submit">Search</button>
+    </form>
     <table class="table">
         <tr>
             <th style="font-size: 22px;">Membre</th>

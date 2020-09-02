@@ -5,7 +5,7 @@ from django.forms import inlineformset_factory
 from django.contrib.auth.models import Group, User
 from django.contrib.auth.decorators import login_required
 from django.db.models import Max, Count
-
+from .filters import WishlistFilter
 
 from .forms import CreateUserForm, MemberForm, WishlistForm
 from .decorators import allowed_users
@@ -52,7 +52,15 @@ def logoutUser(request):
 @login_required(login_url='login')
 def home(request):
     values = Wishlist.objects.filter().values('item', 'order', 'media', 'member', 'member__name', 'member__grade', 'member__class_played')
-    context = {'values': values}
+     
+    filterForm = WishlistFilter(request.GET, queryset=values)
+    list_users = filterForm.qs
+    print(list_users)
+    if "filter_data" in request.GET:
+        context = {'values': list_users, 'filterForm': filterForm}
+        return render(request, 'accounts/home.html', context)
+
+    context = {'values': values, 'filterForm': filterForm}
     return render(request, 'accounts/home.html', context)
 
 
