@@ -52,7 +52,6 @@ def logoutUser(request):
 @login_required(login_url='login')
 def home(request):
     values = Wishlist.objects.filter().values('item', 'order', 'media', 'member', 'member__name', 'member__grade', 'member__class_played')
-    print(values)
     context = {'values': values}
     return render(request, 'accounts/home.html', context)
 
