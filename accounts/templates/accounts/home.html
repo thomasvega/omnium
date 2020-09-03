@@ -1,5 +1,7 @@
 {% extends 'accounts/base.html' %}
 {% block content %}
+
+<script>const whTooltips = {colorLinks: true, iconizeLinks: true, renameLinks: true};</script>
 <script src="https://wow.zamimg.com/widgets/power.js"></script>
 <style>
     li {
@@ -13,14 +15,18 @@
 </style>
 <div class="container">
     <h1 class="text-center">Roster</h1>
+    {% if request.user.is_staff %}
     <form method="get">
         {{filterForm.form}}
         <button class="btn btn-primary" name="filter_data" type="submit">Search</button>
     </form>
+    {%endif%}
     <table class="table">
         <tr>
             <th style="font-size: 22px;">Membre</th>
-            <th style="font-size: 22px;">Wishlist</th>
+            {% if request.user.is_staff %}
+                <th style="font-size: 22px;">Wishlist</th>
+            {%endif%}
         </tr>
         {% regroup values by member__name as values %}
         {%for value in values%}
@@ -48,6 +54,7 @@
                         {%endif%}        
                     {% endfor %} 
                 </td>
+                {% if request.user.is_staff %}
                 <td> 
                     <ul class="expandible">
                         {%regroup value.list by member as wishlists %}
@@ -58,6 +65,7 @@
                         {% endfor %} 
                     </ul>
                 </td>
+                {%endif%}
             </tr>
         {%endfor%}
     </table>

@@ -1,5 +1,65 @@
 {% extends 'accounts/base.html' %}
 {% block content %}
+<script>const whTooltips = {colorLinks: true, iconizeLinks: true, renameLinks: true};</script>
+<script src="https://wow.zamimg.com/widgets/power.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 
+<div class="container-fluid">
+    <div class="row {% if not request.user.is_staff %} justify-content-center {%endif%}">
+        <div class="{% if request.user.is_staff %} col-4 {%else%} col-8 text-center {%endif%}">
+            <h1 class="text-center">Council</h1>
+            {% if items|length > 0 %}
+                <table class="table mt-5">
+                    <tr>
+                        <th>Item</th>
+                    </tr>
+                    {% for item in items %}
+                        <tr>
+                            <td><a href="https://fr.classic.wowhead.com/item={{item.media}}">{{item.item}}</a></td>
+                        </tr>
+                    {% endfor %}
+
+                </table>
+            {%endif%}
+        </div>
+        {% if request.user.is_staff %}
+        <div class="col-8">
+            <h1 class="text-center"> Ajouter un item council</h1>
+            <form action="" method="post" class="form-inline mb-5 d-flex justify-content-center align-items-center">
+                {% csrf_token %}
+                <div class="form-group mr-2">
+                    <input type="text" class="form-control" placeholder="Nom de l'item" name="item_name">
+                </div>
+                <input type="submit" class="btn btn-primary" value="Rechercher" name="looking_for_item">
+            </form>
+            {% for message in messages %}
+                <p class="{{message.tags}}">{{message}}</p>
+            {%endfor%} 
+            <table class="table">
+                <tr>
+                    <th>Item</th>
+                    <th class='text-center'>Ajout à la wishlist</th>
+                </tr>
+                    {% for data in datas %}
+                        <form action="" method="post">
+                            {% csrf_token %}   
+                            {% if data.data.quality.name.fr_FR == 'Épique' or data.data.quality.name.fr_FR == 'Rare' or data.data.quality.name.fr_FR == "Légendaire" and data.data.level < 60 %}
+                                <tr>
+                                    <td>
+                                        <input type="hidden" name="item" value="{{data.data.name.fr_FR}}">
+                                        <input type="hidden" name="media" value="{{data.data.media.id}}">
+                                        <a href="https://fr.classic.wowhead.com/item={{data.data.media.id}}"> {{data.data.name.fr_FR}}</a>
+                                    </td>
+                                    <td><input type="submit" name="add_council" value="Ajouter l'item" class="btn btn-success ml-5"></td>
+                                </tr>
+                            {%endif%}
+                        </form>
+                    {%endfor%}
+                    
+            </table>
+        </div>
+        {%endif%}
+    </div>
+</div>
 
 {% endblock %}
