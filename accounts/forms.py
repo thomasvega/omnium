@@ -25,3 +25,8 @@ class WishlistForm(forms.ModelForm):
         model = Wishlist
         fields= '__all__'
         exclude = ['member']
+    
+class CouncilForm(ModelForm)
+    class Meta:
+        model = Council
+        fields= '__all__'

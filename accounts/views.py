@@ -11,6 +11,7 @@ from .forms import CreateUserForm, MemberForm, WishlistForm
 from .decorators import allowed_users
 
 import requests
+from bnet.connection import BattleNetConnection
 from .models import *
 # Create your views here.
 
@@ -55,7 +56,6 @@ def home(request):
      
     filterForm = WishlistFilter(request.GET, queryset=values)
     list_users = filterForm.qs
-    print(list_users)
     if "filter_data" in request.GET:
         context = {'values': list_users, 'filterForm': filterForm}
         return render(request, 'accounts/home.html', context)
@@ -118,3 +118,9 @@ def wishlist(request):
         return render(request, 'accounts/wishlist.html', context)
     context = {'wishlist_member': wishlist_member}
     return render(request, 'accounts/wishlist.html', context)
+
+
+
+def council(request):
+    context = {}
+    return render(request, 'accounts/council.html', context)

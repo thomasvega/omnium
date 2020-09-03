@@ -43,3 +43,10 @@ class Wishlist(models.Model):
 
     def __str__(self):
         return self.item
+
+class Council(models.Model):
+    item = models.CharField(max_length=200, null=True)
+    media = models.CharField(max_length=200, null=True)
+
+    def __str__(self):
+        return self.item
