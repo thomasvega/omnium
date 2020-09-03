@@ -7,13 +7,16 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Max, Count
 from .filters import WishlistFilter
 
-from .forms import CreateUserForm, MemberForm, WishlistForm
+from .forms import CreateUserForm, MemberForm, WishlistForm, CouncilForm
 from .decorators import allowed_users
 
 import requests
 from bnet.connection import BattleNetConnection
 from .models import *
 # Create your views here.
+
+API_URL = 'https://eu.api.blizzard.com/data/wow/search/item?namespace=static-eu&locale=fr_FR&name.en_US='
+TOKEN_URL = '&orderby=name&_page=1&access_token=USrhNEyDecSFzbHuhEb8pJfkDnNvb2fH0P'
 
 def registerPage(request):
     form = CreateUserForm()
@@ -87,7 +90,7 @@ def wishlist(request):
     if 'looking_for_item' in request.POST :
         item_name = request.POST.get('item_name')
         if item_name:
-            r = requests.get(f'https://eu.api.blizzard.com/data/wow/search/item?namespace=static-eu&locale=fr_FR&name.en_US={item_name}&orderby=name&_page=1&access_token=US52YdGbvp6rGqTSF1JeRfGD18kYhLbp50', params=request.GET)
+            r = requests.get(f'{API_URL}{item_name}{TOKEN_URL}', params=request.GET)
 
             if r.status_code == 200: 
                 data = r.json()
@@ -103,12 +106,15 @@ def wishlist(request):
         order_max = Wishlist.objects.filter(member=member_connected).aggregate(Max('order'))
         order_max = order_max['order__max']
         item_exist = Wishlist.objects.filter(member=member_connected, item=request.POST.get('item'))
+
         if request.POST.get('order') == "":
             messages.warning(request, "Merci de renseigner la position de l'item")
         elif order_max is not None and int(request.POST.get('order')) <= int(order_max):
             messages.warning(request, "Merci de choisir une position supérieur à la position de votre dernier item")
         elif item_exist:
             messages.warning(request, "L'item est déjà présent dans votre wishlist")
+        elif Council.objects.filter(item=request.POST.get('item')).exists():
+            messages.warning(request, "L'item est en loot council")
         else:
             messages.success(request, "Item ajouté à ta wishlist")
             w = Wishlist(order=request.POST.get('order'), item=request.POST.get('item'), media=request.POST.get('media'), member=member_connected)
@@ -122,5 +128,37 @@ def wishlist(request):
 
 
 def council(request):
-    context = {}
-    return render(request, 'accounts/council.html', context)
+    items = Council.objects.all()
+    council_form = CouncilForm()
+    TEMPLATE_NAME = 'accounts/council.html'
+    if 'add_council' in request.POST:
+        print(request.POST.get('item'))
+        try:
+            item_exist = Council.objects.get(item=request.POST.get('item'))
+        except Council.DoesNotExist:
+            item_exist = None
+        
+        if item_exist:
+            messages.warning(request, "L'item est déjà présent dans le loot council")
+        else:
+            c = Council(item=request.POST.get('item'), media=request.POST.get('media'))
+            c.save()
+
+    if 'looking_for_item' in request.POST :
+        item_name = request.POST.get('item_name')
+        if item_name:
+            r = requests.get(f'{API_URL}{item_name}{TOKEN_URL}', params=request.GET)
+
+            if r.status_code == 200: 
+                data = r.json()
+                datas = data['results']
+                context = {'datas': datas, 'item_name': item_name, 'items': items}
+
+                return render(request, TEMPLATE_NAME, context)
+            else:
+                messages.warning(request, "Merci de vérifier l'ortographe de l'item")
+                context = {'items': items}
+                return render(request, TEMPLATE_NAME, context)
+
+    context = {'items': items}
+    return render(request, TEMPLATE_NAME, context)
