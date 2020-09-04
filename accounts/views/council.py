@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from ..filters import WishlistFilter
 
 from ..forms import CouncilForm
 from ..models import Council

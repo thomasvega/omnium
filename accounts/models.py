@@ -34,19 +34,35 @@ class Member(models.Model):
     def __str__(self):
         return self.name
 
+class Item(models.Model):
+    name = models.CharField(max_length=200, null=True)
+    media = models.CharField(max_length=200, null=True)
+
+    def __str__(self):
+        return self.name
+
 
 class Wishlist(models.Model):
     order = models.IntegerField(null=True)
-    item = models.CharField(max_length=200, null=True)
-    media = models.CharField(max_length=200, null=True)
+    item = models.ForeignKey(Item, null=True, on_delete=models.SET_NULL)
     member = models.ForeignKey(Member, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
-        return self.item
+        return self.item.name
+
 
 class Council(models.Model):
-    item = models.CharField(max_length=200, null=True)
-    media = models.CharField(max_length=200, null=True)
+    item = models.ForeignKey(Item, null=True, on_delete=models.SET_NULL)
+    is_council = models.BooleanField(null=True)
 
     def __str__(self):
-        return self.item
+        return self.item.name
+
+
+class Attrib(models.Model):
+    items = models.ManyToManyField(Item)
+    members = models.ManyToManyField(Member)
+    is_received = models.BooleanField(null=True)
+
+    def __str__(self):
+        return self.items.name
