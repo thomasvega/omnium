@@ -15,10 +15,10 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-4">
+        <div class="col-5">
             <h1 class="text-center mb-5">Wishlist</h1>
             {% if wishlist_member|length > 0 %}
-                <table class="table mt-5">
+                <table class="table">
                     <tr>
                         <th>Position</th>
                         <th>Item</th>
@@ -33,9 +33,9 @@
                 </table>
             {%endif%}
         </div>
-        <div class="col-8">
-            <h1 class="text-center mb-5">Ajouter dans sa wishlist</h1>
-            <form action="" method="post" class="form-inline mb-5 d-flex justify-content-center align-items-center">
+        <div class="col-6">
+            <h1 class="text-center">Ajouter dans sa wishlist</h1>
+            <form action="" method="post" class="form-inline d-flex justify-content-center align-items-center">
                 {% csrf_token %}
                 <div class="form-group mr-2">
                     <input type="text" class="form-control" placeholder="Nom de l'item" name="item_name">
