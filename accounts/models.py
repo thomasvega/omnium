@@ -60,9 +60,10 @@ class Council(models.Model):
 
 
 class Attrib(models.Model):
-    items = models.ManyToManyField(Item)
-    members = models.ManyToManyField(Member)
+    item = models.ForeignKey(Item, null=True, on_delete=models.SET_NULL)
+    member = models.ForeignKey(Member, null=True, on_delete=models.SET_NULL)
     is_received = models.BooleanField(null=True)
+    date = models.DateTimeField(auto_now_add=True, blank=True)
 
     def __str__(self):
-        return self.items.name
+        return self.member.name

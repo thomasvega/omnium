@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.contrib.auth.models import User
 
-from .models import *
+from .models import Member, User, Wishlist, Council, Attrib
 
 class MemberForm(ModelForm):
     class Meta:
@@ -30,3 +30,8 @@ class CouncilForm(ModelForm):
     class Meta:
         model = Council
         fields= '__all__'
+    
+class AttribForm(ModelForm):
+    class Meta:
+        model = Attrib
+        fields = '__all__'
