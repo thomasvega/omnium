@@ -60,7 +60,7 @@
                         {%regroup value.list by member as wishlists %}
                         {% for wishlist in wishlists %}
                             {% for mwishlist in wishlist.list%}
-                               <li> {{mwishlist.order}}. <a href="https://fr.classic.wowhead.com/item={{mwishlist.media}}"> {{mwishlist.item}}</a> <br></li>
+                               <li> {{mwishlist.order}}. <a href="https://fr.classic.wowhead.com/item={{mwishlist.item__media}}"> {{mwishlist.item__name}}</a> <br></li>
                             {%endfor%}
                         {% endfor %} 
                     </ul>

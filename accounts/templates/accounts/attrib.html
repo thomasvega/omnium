@@ -1,0 +1,48 @@
+{% extends 'accounts/base.html' %}
+{% block content %}
+<script>const whTooltips = {colorLinks: true, iconizeLinks: true, renameLinks: true};</script>
+<script src="https://wow.zamimg.com/widgets/power.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+<style>
+    .warning {
+        color: red;
+    }
+    .success {
+        color: green;
+    }
+</style>
+
+<div class="container">
+    <h1 class="text-center mb-5">Attribution de loot</h1>
+    {% for message in messages %}
+        <p class="{{message.tags}} text-center">{{message}}</p>
+    {%endfor%} 
+    <div class="row d-flex justify-content-center align-items-center">
+        <form action="" method="POST">
+            {% csrf_token %}
+            Le membre 
+            <select name="member" id="" class="ml-5 mr-5">
+                <option value=""></option>
+                {% for member in members %}
+                    <option value="{{member}}">{{member}}</option>
+                {%endfor%}
+            </select>
+            reçoit l'item :
+            <select name="item" id="" class="ml-5 mr-5">
+                <option value=""></option>
+
+                {% for item in items %}
+                    <option value="{{item}}">{{item}}</option>
+                {%endfor%}
+            </select>
+            <div class="text-center mt-5">
+                <input type="submit" class="btn btn-success" value="Enregistrer">
+
+            </div>
+        </form>
+    </div>
+    
+
+</div>
+
+{% endblock %}
