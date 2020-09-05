@@ -3,26 +3,34 @@
 <script>const whTooltips = {colorLinks: true, iconizeLinks: true, renameLinks: true};</script>
 <script src="https://wow.zamimg.com/widgets/power.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+<style>
+    .warning {
+        color: red;
+    }
+    .success {
+        color: green;
+    }
+</style>
 
 <div class="container-fluid">
     <div class="row {% if not request.user.is_staff %} justify-content-center {%endif%}">
-        <div class="{% if request.user.is_staff %} col-4 {%else%} col-8 text-center {%endif%}">
+        <div class="{% if not request.user.is_staff %} col-4 {%else%} col-8 text-center {%endif%}">
             <h1 class="text-center mb-5">Council</h1>
             {% if items|length > 0 %}
                 <table class="table">
                     <tr>
-                        <th>Item</th>
+                        <th>Items</th>
                     </tr>
                     {% for item in items %}
                         <tr>
-                            <td><a href="https://fr.classic.wowhead.com/item={{item.media}}">{{item.item}}</a></td>
+                            <td><a href="https://fr.classic.wowhead.com/item={{item.item__media}}">{{item.item__name}}</a></td>
                         </tr>
                     {% endfor %}
 
                 </table>
             {%endif%}
         </div>
-        {% if request.user.is_staff %}
+        {% if not request.user.is_staff %}
         <div class="col-8">
             <h1 class="text-center"> Ajouter un item council</h1>
             <form action="" method="post" class="form-inline d-flex justify-content-center align-items-center">

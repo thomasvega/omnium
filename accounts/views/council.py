@@ -2,27 +2,33 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 
 from ..forms import CouncilForm
-from ..models import Council
+from ..models import Council, Item
 
 import requests
 API_URL = 'https://eu.api.blizzard.com/data/wow/search/item?namespace=static-eu&locale=fr_FR&name.en_US='
-TOKEN_URL = '&orderby=name&_page=1&access_token=USrhNEyDecSFzbHuhEb8pJfkDnNvb2fH0P'
+TOKEN_URL = '&orderby=name&_page=1&access_token=USd4iFYTqnoakJt8T4Jono8vl28hDGoL1t'
 
 def council(request):
-    items = Council.objects.all()
-    council_form = CouncilForm()
+    items = Council.objects.filter(is_council=True).values('item__name', 'item__media')
     TEMPLATE_NAME = 'accounts/council.html'
     if 'add_council' in request.POST:
-        print(request.POST.get('item'))
+        item_name = request.POST.get('item')
+        media = request.POST.get('media')
+
         try:
-            item_exist = Council.objects.get(item=request.POST.get('item'))
+            item_from_bdd = Item.objects.get(name=item_name)
+        except Item.DoesNotExist:
+            item_from_bdd = None
+            item_from_bdd = Item(name=item_name, media=media)
+            item_from_bdd.save()
+
+        try:
+            item_is_council = Council.objects.get(item__name=item_name)
+            if item_is_council:
+                messages.warning(request, "L'item est déjà présent dans le loot council")
         except Council.DoesNotExist:
-            item_exist = None
-        
-        if item_exist:
-            messages.warning(request, "L'item est déjà présent dans le loot council")
-        else:
-            c = Council(item=request.POST.get('item'), media=request.POST.get('media'))
+            item_is_council = None
+            c = Council(item=item_from_bdd, is_council=True)
             c.save()
 
     if 'looking_for_item' in request.POST :
