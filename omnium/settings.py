@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 SECRET_KEY = 'y6ydvi0^6*eghpn#56g@btum9vpqhpz(e19oxgozxb6%^lfiis'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['consensus-omnium.herokuapp.com', 'localhost']
 
 
 # Application definition

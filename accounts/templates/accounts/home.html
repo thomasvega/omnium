@@ -76,7 +76,7 @@
             $lis = $ul.find('li:gt(1)'),
             isExpanded = $ul.hasClass('expanded');
             $lis[isExpanded ? 'show' : 'hide']();
-        console.log($lis)
+            
         if($lis.length > 0){
             $ul
                 .append($('<li class="expand"><span>' + (isExpanded ? 'Show Less...' : 'Show More...') + '</span></li>')
