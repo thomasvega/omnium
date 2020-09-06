@@ -14,7 +14,7 @@
 
 <div class="container-fluid">
     <div class="row {% if not request.user.is_staff %} justify-content-center {%endif%}">
-        <div class="{% if not request.user.is_staff %} col-4 {%else%} col-8 text-center {%endif%}">
+        <div class="{% if request.user.is_staff %} col-4 {%else%} col-8 text-center {%endif%}">
             <h1 class="text-center mb-5">Council</h1>
             {% if items|length > 0 %}
                 <table class="table">
@@ -30,7 +30,7 @@
                 </table>
             {%endif%}
         </div>
-        {% if not request.user.is_staff %}
+        {% if request.user.is_staff %}
         <div class="col-8">
             <h1 class="text-center"> Ajouter un item council</h1>
             <form action="" method="post" class="form-inline d-flex justify-content-center align-items-center">

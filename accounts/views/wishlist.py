@@ -3,6 +3,7 @@ from django.contrib.auth import logout
 from django.contrib import messages
 from django.contrib.auth.models import Group, User
 from django.db.models import Max, Count
+from django.contrib.auth.decorators import login_required
 
 # from ..filters import WishlistFilter
 from ..decorators import allowed_users
@@ -13,6 +14,7 @@ import requests
 API_URL = 'https://eu.api.blizzard.com/data/wow/search/item?namespace=static-eu&locale=fr_FR&name.en_US='
 TOKEN_URL = '&orderby=name&_page=1&access_token=USd4iFYTqnoakJt8T4Jono8vl28hDGoL1t'
 
+@login_required(login_url='login')
 def wishlist(request):
     user = request.user
     try:
@@ -20,9 +22,6 @@ def wishlist(request):
     except Member.DoesNotExist :
         member_connected = None
     
-    if member_connected is None:
-        logout(request)
-        return redirect('login')
 
     wishlist_member = Wishlist.objects.filter(member=member_connected).values('order', 'item', 'item__name', 'item__media')
     TEMPLATE_URL = 'accounts/wishlist.html'

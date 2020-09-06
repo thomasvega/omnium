@@ -24,9 +24,11 @@
             <li class="nat-item text-white mr-3">
                <a class="text-white" href="{% url 'history' %}">Loot history</a>
             </li>
+            {% if request.user.is_staff %}
             <li class="nat-item text-white mr-3">
                 <a class="text-white" href="{% url 'attrib' %}">Attrib</a>
             </li>
+            {%endif%}
             <!-- <li class="nat-item">
                <a class="text-white" href="{% url 'account' %}">Profil</a> 
             </li> -->

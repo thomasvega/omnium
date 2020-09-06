@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 from ..forms import CouncilForm
 from ..models import Council, Item
@@ -8,6 +9,8 @@ import requests
 API_URL = 'https://eu.api.blizzard.com/data/wow/search/item?namespace=static-eu&locale=fr_FR&name.en_US='
 TOKEN_URL = '&orderby=name&_page=1&access_token=USd4iFYTqnoakJt8T4Jono8vl28hDGoL1t'
 
+
+@login_required(login_url='login')
 def council(request):
     items = Council.objects.filter(is_council=True).values('item__name', 'item__media')
     TEMPLATE_NAME = 'accounts/council.html'
