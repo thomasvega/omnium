@@ -12,7 +12,7 @@ from ..models import Wishlist, Member, Council, Item
 import requests
 
 API_URL = 'https://eu.api.blizzard.com/data/wow/search/item?namespace=static-eu&locale=fr_FR&name.en_US='
-TOKEN_URL = '&orderby=name&_page=1&access_token=USd4iFYTqnoakJt8T4Jono8vl28hDGoL1t'
+TOKEN_URL = '&orderby=name&_page=1&access_token=US4WGkPN65VVextZKtpwTS7jO70gsSVKWL'
 
 @login_required(login_url='login')
 def wishlist(request):
