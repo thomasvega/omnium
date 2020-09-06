@@ -15,9 +15,11 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav mr-auto">
+            {% if not request.user.is_staff %}
             <li class="nat-item text-white mr-3 ml-4">
                <a class="text-white" href="{% url 'wishlist' %}">Ma wishlist</a> 
             </li>
+            {%endif%}
             <li class="nat-item text-white mr-3">
                 <a class="text-white" href="{% url 'council' %}">Council</a>
             </li>
