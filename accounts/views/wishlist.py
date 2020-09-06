@@ -8,11 +8,12 @@ from django.contrib.auth.decorators import login_required
 # from ..filters import WishlistFilter
 from ..decorators import allowed_users
 from ..models import Wishlist, Member, Council, Item
+from .tools import create_access_token
 
 import requests
+from requests.auth import HTTPBasicAuth
+from django.conf import settings
 
-API_URL = 'https://eu.api.blizzard.com/data/wow/search/item?namespace=static-eu&locale=fr_FR&name.en_US='
-TOKEN_URL = '&orderby=name&_page=1&access_token=US4WGkPN65VVextZKtpwTS7jO70gsSVKWL'
 
 @login_required(login_url='login')
 def wishlist(request):
@@ -28,7 +29,9 @@ def wishlist(request):
     if 'looking_for_item' in request.POST :
         item_name = request.POST.get('item_name')
         if item_name:
-            r = requests.get(f'{API_URL}{item_name}{TOKEN_URL}', params=request.GET)
+            token = create_access_token(settings.CLIENT_ID, settings.CLIENT_SECRET)
+            token = token['access_token']
+            r = requests.get(f'{settings.API_URL}{item_name}{settings.TOKEN_URL}{token}', params=request.GET)
 
             if r.status_code == 200: 
                 data = r.json()
