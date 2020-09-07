@@ -7,7 +7,7 @@ from ..models import Attrib, Item
 
 @login_required(login_url='login')
 def history(request):
-    datas = Attrib.objects.filter().values('item__name', 'item__media', 'member__name', 'is_received', 'date')
+    datas = Attrib.objects.filter().values('item__name', 'item__media', 'member__name', 'is_received', 'date').order_by('-date')
 
     context = {'datas': datas}
     return render(request, 'accounts/history.html', context)

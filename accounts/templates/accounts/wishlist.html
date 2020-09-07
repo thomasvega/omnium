@@ -15,25 +15,25 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-5">
-            <h1 class="text-center mb-5">Wishlist</h1>
+        <div class="col-3">
             {% if wishlist_member|length > 0 %}
-                <table class="table">
-                    <tr>
-                        <th>Position</th>
-                        <th>Item</th>
-                    </tr>
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h4 class="text-center">Wishlist</h4>
+                </div>
+                <ul class="list-group" style="text-decoration: none; padding: 20px">
                     {% for wishlist in wishlist_member|dictsort:'order' %}
-                        <tr>
-                            <td>{{wishlist.order}}</td>
-                            <td><a href="https://fr.classic.wowhead.com/item={{wishlist.item__media}}">{{wishlist.item__name}}</a></td>
-                        </tr>
+                        <li style="list-style: none;">
+                            {{wishlist.order}}. 
+                            <a href="https://fr.classic.wowhead.com/item={{wishlist.item__media}}">{{wishlist.item__name}}</a></td>
+                        </li>
                     {% endfor %}
-
-                </table>
+                </ul>
+            </div>
+                
             {%endif%}
         </div>
-        <div class="col-6">
+        <div class="col-9">
             <h1 class="text-center">Ajouter dans sa wishlist</h1>
             <form action="" method="post" class="form-inline d-flex justify-content-center align-items-center">
                 {% csrf_token %}

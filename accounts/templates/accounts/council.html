@@ -14,24 +14,25 @@
 
 <div class="container-fluid">
     <div class="row {% if not request.user.is_staff %} justify-content-center {%endif%}">
-        <div class="{% if request.user.is_staff %} col-4 {%else%} col-8 text-center {%endif%}">
-            <h1 class="text-center mb-5">Council</h1>
-            {% if items|length > 0 %}
-                <table class="table">
-                    <tr>
-                        <th>Items</th>
-                    </tr>
+        <div class="{% if request.user.is_staff %} col-3 {%else%} col-8 text-center {%endif%}">
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h4 class="text-center">Council</h4>
+                </div>
+                {% if items|length > 0 %}
+                <ul class="list-group" style="padding: 20px">
                     {% for item in items %}
-                        <tr>
-                            <td><a href="https://fr.classic.wowhead.com/item={{item.item__media}}">{{item.item__name}}</a></td>
-                        </tr>
+                    <li style="list-style:none;">
+                        <a href="https://fr.classic.wowhead.com/item={{item.item__media}}">{{item.item__name}}</a>                        
+                    </li>
                     {% endfor %}
+                </ul>
+                {%endif%}
 
-                </table>
-            {%endif%}
+            </div>
         </div>
         {% if request.user.is_staff %}
-        <div class="col-8">
+        <div class="col-9">
             <h1 class="text-center"> Ajouter un item council</h1>
             <form action="" method="post" class="form-inline d-flex justify-content-center align-items-center">
                 {% csrf_token %}
