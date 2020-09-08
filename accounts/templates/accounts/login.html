@@ -51,6 +51,12 @@
                 box-shadow: none !important;
                 outline: 0px !important;
             }
+            .warning {
+                color: red;
+            }
+            .success {
+                color: green;
+            }
         </style>
     </head>
     <body>
@@ -60,7 +66,7 @@
                     <img src="{% static 'images/logo_omnium.png' %}" alt="" class="omnium-logo">
                     <span class="omnium-font">Consensus Omnium</span>
                 </div>
-                <div class="col-6 d-flex justify-content-center ">
+                <div class="col-6 d-flex justify-content-center">
                     <form action="" method="post">
                         {% csrf_token %}
                         <div class="input-group mb-3">
@@ -80,10 +86,14 @@
 							<input class="btn login_btn" type="submit" value="Login">
                         </div>
                         <div class="text-center mt-3">
+                            {% for message in messages %}
+                                <p class="{{message.tags}}">{{message}}</p>
+                            {%endfor%} 
                             <a href="{% url 'register' %}" class="text-white"> Pas encore inscrit ? </a>
                         </div>
                     </form>
                 </div>
+                
             </div>
         </div>
     </body>
