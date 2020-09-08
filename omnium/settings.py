@@ -33,7 +33,7 @@ CLIENT_SECRET = config('CLIENT_SECRET')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['consensus-omnium.herokuapp.com', 'localhost']
+ALLOWED_HOSTS = ['my_ip_host', 'localhost']
 
 
 # Application definition
@@ -93,8 +93,8 @@ DATABASES = {
     }
 }
 
-db_from_env = dj_database_url.config(conn_max_age=600)
-DATABASES['default'].update(db_from_env)
+# db_from_env = dj_database_url.config(conn_max_age=600)
+# DATABASES['default'].update(db_from_env)
 
 
 # Password validation
@@ -133,7 +133,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_ROOT = Path(BASE_DIR, 'staticfiles')
+STATIC_ROOT = '/var/www/static'
 
 STATIC_URL = '/static/'
 
@@ -143,4 +143,4 @@ STATICFILES_DIRS = [
     Path(BASE_DIR, 'static')
 ]
 
-MEDIA_ROOT = Path(BASE_DIR, 'static/images')
+MEDIA_ROOT = '/var/www/media'
